@@ -33,24 +33,36 @@
 
 ## Why AzRM?
 
-Traditional seismic modeling tools struggle with **azimuthal anisotropy** - the directional dependence of seismic velocities caused by aligned fractures or stress fields. **AzRM** solves this by implementing the full reflectivity method for arbitrary anisotropic media, enabling accurate modeling of:
+**AzRM** implements the **reflectivity method** for computing 1D plane-wave seismic gather records in **arbitrary anisotropic horizontally layered media**. Unlike traditional convolution-based models, AzRM makes **no restrictive assumptions** (single interface, small angles, weak impedance contrast), enabling accurate modeling of:
 
-- **Fractured reservoirs** (HTI media)
-- **Shale formations** (VTI media)
-- **Complex geological settings** (Orthorhombic media)
+- **Multiple reflections** and **transmission losses** in layered media
+- **Arbitrary anisotropic media** (ISO, VTI, HTI, Orthorhombic)
+- **AVO & AVAZ analysis** for fracture characterization and reservoir analysis
 
 <table>
 <tr>
 <td width="50%">
 
 ### The Problem
-Conventional AVO analysis assumes isotropic or simple VTI media, missing critical **azimuthal variations** that indicate fracture orientation and density.
+Traditional **convolution models** rely on restrictive assumptions:
+- Single interface approximation
+- Small-angle approximation
+- Weak impedance contrast
+- No multiple reflections
+- Limited to simple anisotropy
+
+These limitations fail to capture the complex wave propagation in realistic layered anisotropic media.
 
 </td>
 <td width="50%">
 
 ### The Solution
-AzRM computes **full-waveform synthetics** for any incidence angle AND azimuth, revealing the complete AVAZ (Amplitude Variation with Azimuth) signature.
+AzRM's **reflectivity method** provides:
+- ✅ **No restrictive assumptions** - handles arbitrary layer contrasts
+- ✅ **Full multiple modeling** - includes all internal multiples
+- ✅ **Transmission loss** - accurate amplitude modeling
+- ✅ **Arbitrary anisotropy** - ISO, VTI, HTI, Orthorhombic
+- ✅ **AVO & AVAZ analysis** - complete angle and azimuth coverage
 
 </td>
 </tr>
@@ -315,8 +327,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 <td align="center">
 <b>Rui Yang</b><br>
 <small>Tongji University / Stanford University</small><br>
-<a href="mailto:yangrui@tongji.edu.cn">Email</a> •
-<a href="https://github.com/yourusername">GitHub</a>
+<a href="mailto:yangrui199711@gmail.com">Email</a> •
+<a href="https://github.com/RuiYang-Geophysicist">GitHub</a>
 </td>
 </tr>
 </table>
