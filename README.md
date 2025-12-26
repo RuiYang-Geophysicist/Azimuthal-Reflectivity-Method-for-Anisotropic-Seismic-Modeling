@@ -1,0 +1,1 @@
+# Azimuthal-Reflectivity-Method-for-Anisotropic-Seismic-Modeling
