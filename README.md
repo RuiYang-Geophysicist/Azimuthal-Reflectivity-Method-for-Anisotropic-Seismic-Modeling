@@ -103,7 +103,7 @@ AzRM's **reflectivity method** provides:
 ✓ Synthetic seismic gathers (angle domain)     ✓ AVAZ gathers (azimuth domain)
 ✓ AVO & AVAZ curve analysis                    ✓ Multi-layer modeling with multiples
 ✓ Velocity profile visualization               ✓ Real-time parameter adjustment
-✓ Thomsen parameter support                    ✓ Hudson crack model for HTI
+✓ Thomsen parameter support                    ✓ Schoenberg crack model for HTI
 ```
 
 ---
@@ -142,7 +142,7 @@ AzRM's **reflectivity method** provides:
 | Requirement | Version | Installation |
 |------------|---------|--------------|
 | Python | 3.8+ | [python.org](https://python.org) |
-| Eigen3 | 3.3+ | `brew install eigen` (macOS) |
+| Eigen3 | 3.3+ | `brew install eigen` (macOS)<br>`vcpkg install eigen3` (Windows)<br>`sudo apt install libeigen3-dev` (Linux) |
 | pybind11 | 2.10+ | `pip install pybind11` |
 
 ### Quick Install
@@ -188,7 +188,7 @@ layers = [
     {'type': 'VTI', 'thickness': 0.5, 'vp': 3.0, 'vs': 1.5, 'rho': 2.3,
      'epsilon': 0.05, 'delta': 0.02, 'gamma': 0.03},
     {'type': 'HTI', 'thickness': 0.3, 'vp': 3.5, 'vs': 1.8, 'rho': 2.5,
-     'crack_density': 0.05}  # Fractured layer
+     'fracture_density': 0.05}  # Fractured layer
 ]
 
 # Build model and compute
@@ -218,8 +218,8 @@ for phi in [0, 45, 90]:
 |------|----------|------------|----------------|
 | **ISO** | Isotropic | Vp, Vs, ρ | Homogeneous rock |
 | **VTI** | Hexagonal (vertical axis) | + ε, δ, γ | Shale, layered sediments |
-| **HTI** | Hexagonal (horizontal axis) | + crack density | Vertical fractures |
-| **OA** | Orthorhombic | + ε, δ, γ, crack density | Fractured shale |
+| **HTI** | Hexagonal (horizontal axis) | + fracture density | Vertical fractures |
+| **OA** | Orthorhombic | + ε, δ, γ, fracture density | Fractured shale |
 
 ### Algorithm
 
@@ -298,7 +298,7 @@ If you use AzRM in your research, please cite:
 - Fryer & Frazer (1984, 1987) - Reflectivity method for anisotropic media
 - Kennett (1983) - Recursive algorithm for layered media
 - Thomsen (1986) - Weak elastic anisotropy parameters
-- Hudson (1981) - Crack-induced anisotropy model
+- Schoenberg & Helbig (1997) - Orthorhombic media model for fractured media
 
 ---
 

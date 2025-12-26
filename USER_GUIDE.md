@@ -27,8 +27,8 @@ A high-performance seismic forward modeling tool for computing synthetic seismog
 |------|-------------|---------------------|
 | **ISO** | Isotropic | Vp, Vs, rho |
 | **VTI** | Vertical Transverse Isotropy | Vp, Vs, rho, epsilon, delta, gamma |
-| **HTI** | Horizontal Transverse Isotropy | Vp, Vs, rho, crack density |
-| **OA** | Orthorhombic | Vp, Vs, rho, epsilon, delta, gamma, crack density |
+| **HTI** | Horizontal Transverse Isotropy | Vp, Vs, rho, fracture density |
+| **OA** | Orthorhombic | Vp, Vs, rho, epsilon, delta, gamma, fracture density |
 
 ---
 
@@ -82,9 +82,9 @@ C66 = C44 * (1 + 2*gamma)
 C13 = sqrt(2*delta*C33*(C33-C44) + (C33-C44)^2) - C44
 ```
 
-**HTI from Crack Density**:
+**HTI from Fracture Density**:
 ```
-Using Hudson (1981) and Schoenberg (1997) penny-shaped crack model with symmetry axis rotation
+Using Schoenberg & Helbig (1997) penny-shaped crack model with symmetry axis rotation
 ```
 
 ---
@@ -103,6 +103,15 @@ Using Hudson (1981) and Schoenberg (1997) penny-shaped crack model with symmetry
 **macOS**:
 ```bash
 brew install eigen
+```
+
+**Windows**:
+```bash
+# Using vcpkg (recommended)
+vcpkg install eigen3
+
+# Or download headers manually from:
+# https://eigen.tuxfamily.org/index.php?title=Main_Page
 ```
 
 **Ubuntu/Debian**:
@@ -229,7 +238,7 @@ print(f"Rpp at normal incidence: {Rpp[0]:.4f}")
    - **Density** (g/cm^3)
    - **Anisotropy parameters**:
      - VTI/OA: epsilon, delta, gamma
-     - HTI/OA: crack density
+     - HTI/OA: fracture density
 
 #### 2. Set Forward Modeling Parameters
 
@@ -294,7 +303,7 @@ Three export formats available:
 ### Tips for Best Results
 
 1. **For VTI models**: Ensure |epsilon| < 0.3, |delta| < 0.3, |gamma| < 0.3
-2. **For HTI models**: Crack density typically 0.01-0.1
+2. **For HTI models**: Fracture density typically 0.01-0.1
 3. **For strong AVAZ effect**: Use HTI or OA layers with phi != 0 or 90 degrees
 4. **For stable computation**: Avoid very thin layers (< 0.01 km)
 
@@ -413,8 +422,6 @@ from stiffness import (
 
 6. **Schoenberg M, Helbig K.** Orthorhombic media: Modeling elastic wave behavior in a vertically fractured earth. *Geophysics*, 1997, 62(6): 1954-1974.
 
-7. **Hudson J A.** Wave speeds and attenuation of elastic waves in material containing cracks. *Geophysical Journal International*, 1981, 64(1): 133-150.
-
 ---
 
 ## Author
@@ -459,5 +466,5 @@ python3 -m streamlit run app.py --server.headless true
 ### AVAZ shows no variation
 
 - AVAZ variation requires HTI or OA layers
-- Ensure crack_density > 0 for HTI layers
+- Ensure fracture_density > 0 for HTI layers
 - Try different azimuth angles

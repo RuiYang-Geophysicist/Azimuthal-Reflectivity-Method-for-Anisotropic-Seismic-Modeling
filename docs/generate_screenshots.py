@@ -237,7 +237,7 @@ def generate_screenshot_model():
         'epsilon': 0.08,
         'delta': 0.02,
         'gamma': 0.05,
-        'crack_density': 0.06
+        'fracture_density': 0.06
     }
     
     # Create summary table data
@@ -256,7 +256,7 @@ def generate_screenshot_model():
             row['δ'] = layer.get('delta', 0)
             row['γ'] = layer.get('gamma', 0)
         if layer['type'] in ['HTI', 'OA']:
-            row['e (crack)'] = layer.get('crack_density', 0)
+            row['e (fracture)'] = layer.get('fracture_density') or layer.get('crack_density', 0)
         summary_data.append(row)
     
     df = pd.DataFrame(summary_data)
@@ -310,7 +310,7 @@ def generate_screenshot_avo():
         'epsilon': 0.08,
         'delta': 0.02,
         'gamma': 0.05,
-        'crack_density': 0.06
+        'fracture_density': 0.06
     }
     
     angles = np.arange(0, 41, 1.0)
@@ -370,7 +370,7 @@ def generate_screenshot_gather():
         'epsilon': 0.08,
         'delta': 0.02,
         'gamma': 0.05,
-        'crack_density': 0.06
+        'fracture_density': 0.06
     }
     
     angles = np.arange(0, 41, 1.0)

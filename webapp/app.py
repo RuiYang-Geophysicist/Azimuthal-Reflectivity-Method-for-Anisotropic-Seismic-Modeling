@@ -464,7 +464,7 @@ with st.sidebar:
                 'epsilon': 0.05,
                 'delta': 0.02,
                 'gamma': 0.03,
-                'crack_density': 0.0
+                'fracture_density': 0.0
             }
             st.session_state.layers.append(new_layer)
             st.rerun()
@@ -600,11 +600,11 @@ with tab1:
                         key=f"gam_{i}"
                     )
 
-                # Show crack density for HTI and OA
+                # Show fracture density for HTI and OA
                 if layer['type'] in ['HTI', 'OA']:
-                    layer['crack_density'] = st.number_input(
-                        "Crack density",
-                        value=float(layer.get('crack_density', 0.05)),
+                    layer['fracture_density'] = st.number_input(
+                        "Fracture density",
+                        value=float(layer.get('fracture_density') or layer.get('crack_density', 0.05)),
                         min_value=0.0,
                         max_value=0.15,
                         step=0.01,
@@ -630,7 +630,7 @@ with tab1:
             row['δ'] = layer.get('delta', 0)
             row['γ'] = layer.get('gamma', 0)
         if layer['type'] in ['HTI', 'OA']:
-            row['e (crack)'] = layer.get('crack_density', 0)
+            row['e (fracture)'] = layer.get('fracture_density') or layer.get('crack_density', 0)
         summary_data.append(row)
         total_thickness += layer['thickness']
 
@@ -1011,8 +1011,8 @@ with tab3:
     |------|-------------|------------|
     | **ISO** | Isotropic | Vp, Vs, ρ |
     | **VTI** | Vertical Transverse Isotropy | Vp, Vs, ρ, ε, δ, γ |
-    | **HTI** | Horizontal Transverse Isotropy | Vp, Vs, ρ, crack density |
-    | **OA** | Orthorhombic | Vp, Vs, ρ, ε, δ, γ, crack density |
+    | **HTI** | Horizontal Transverse Isotropy | Vp, Vs, ρ, fracture density |
+    | **OA** | Orthorhombic | Vp, Vs, ρ, ε, δ, γ, fracture density |
 
     ### Algorithm
 

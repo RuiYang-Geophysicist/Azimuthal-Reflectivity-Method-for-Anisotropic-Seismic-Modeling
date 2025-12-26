@@ -115,9 +115,9 @@ def stiffness_vti(vp: float, vs: float, rho: float,
 
 
 def stiffness_hti_hudson(vp: float, vs: float, rho: float,
-                          crack_density: float, aspect_ratio: float = 0.01) -> np.ndarray:
+                          fracture_density: float, aspect_ratio: float = 0.01) -> np.ndarray:
     """
-    Construct stiffness matrix for HTI medium using Hudson's crack theory.
+    Construct stiffness matrix for HTI medium using Schoenberg's crack theory.
 
     The HTI medium is modeled as an isotropic background with aligned
     vertical penny-shaped cracks. The crack normal is along the x1 axis.
@@ -130,8 +130,8 @@ def stiffness_hti_hudson(vp: float, vs: float, rho: float,
         Background S-wave velocity (km/s)
     rho : float
         Density (g/cm^3)
-    crack_density : float
-        Crack density parameter e = N * a^3 / V, typically 0 to 0.1
+    fracture_density : float
+        Fracture density parameter e = N * a^3 / V, typically 0 to 0.1
     aspect_ratio : float, optional
         Crack aspect ratio (thickness/diameter), default 0.01
 
@@ -142,8 +142,8 @@ def stiffness_hti_hudson(vp: float, vs: float, rho: float,
 
     Reference
     ---------
-    Hudson, J.A. (1981). Wave speeds and attenuation of elastic waves in
-    material containing cracks. Geophys. J. R. Astr. Soc., 64, 133-150.
+    Schoenberg, M., & Helbig, K. (1997). Orthorhombic media: Modeling elastic
+    wave behavior in a vertically fractured earth. Geophysics, 62(6), 1954-1974.
     """
     # Background isotropic moduli
     mu = rho * vs**2
@@ -153,13 +153,13 @@ def stiffness_hti_hudson(vp: float, vs: float, rho: float,
     # Poisson's ratio
     nu = (vp**2 - 2 * vs**2) / (2 * (vp**2 - vs**2))
 
-    # Hudson's U parameters (for dry cracks)
+    # Schoenberg's crack model parameters (for dry cracks)
     # For penny-shaped cracks with small aspect ratio
     U1 = 16 * (1 - nu) / (3 * (2 - nu))
     U3 = 4 * (1 - nu) / (3 * (2 - nu) / (1 - nu / 2))
 
     # First-order corrections
-    e = crack_density
+    e = fracture_density
     dC11 = -lam**2 * e * U1 / (mu * (lam + 2 * mu))
     dC13 = -lam * e * U1 / (lam + 2 * mu)
     dC33 = -(lam + 2 * mu) * e * U1
@@ -187,7 +187,7 @@ def stiffness_hti_hudson(vp: float, vs: float, rho: float,
 
 def stiffness_orthorhombic(vp: float, vs: float, rho: float,
                             epsilon_v: float, delta_v: float, gamma_v: float,
-                            crack_density: float) -> np.ndarray:
+                            fracture_density: float) -> np.ndarray:
     """
     Construct stiffness matrix for orthorhombic medium.
 
@@ -208,8 +208,8 @@ def stiffness_orthorhombic(vp: float, vs: float, rho: float,
         VTI Thomsen parameter delta
     gamma_v : float
         VTI Thomsen parameter gamma
-    crack_density : float
-        Crack density for vertical cracks (0 to 0.1)
+    fracture_density : float
+        Fracture density for vertical cracks (0 to 0.1)
 
     Returns
     -------
@@ -224,7 +224,7 @@ def stiffness_orthorhombic(vp: float, vs: float, rho: float,
     # Start with VTI background
     C_vti = stiffness_vti(vp, vs, rho, epsilon_v, delta_v, gamma_v)
 
-    # Add crack perturbation using Hudson theory
+    # Add crack perturbation using Schoenberg theory
     # Crack normal along x1 direction
 
     mu = rho * vs**2
@@ -233,11 +233,11 @@ def stiffness_orthorhombic(vp: float, vs: float, rho: float,
     # Poisson's ratio
     nu = (vp**2 - 2 * vs**2) / (2 * (vp**2 - vs**2) + 1e-10)
 
-    # Hudson U parameters
+    # Schoenberg crack model parameters
     U1 = 16 * (1 - nu) / (3 * (2 - nu) + 1e-10)
     U3 = 4 * (1 - nu) / (3 * (2 - nu) / (1 - nu / 2 + 1e-10) + 1e-10)
 
-    e = crack_density
+    e = fracture_density
 
     # Crack perturbations (simplified)
     dC11 = -(lam + 2 * mu) * e * U1
@@ -276,7 +276,7 @@ def build_layer_stiffness(layer_params: dict) -> np.ndarray:
         - 'delta': Thomsen delta
         - 'gamma': Thomsen gamma
         For HTI/OA:
-        - 'crack_density': Crack density parameter
+        - 'fracture_density' or 'crack_density': Fracture density parameter
 
     Returns
     -------
@@ -298,15 +298,15 @@ def build_layer_stiffness(layer_params: dict) -> np.ndarray:
         return stiffness_vti(vp, vs, rho, epsilon, delta, gamma)
 
     elif media_type == 'HTI':
-        crack_density = layer_params.get('crack_density', 0.05)
-        return stiffness_hti_hudson(vp, vs, rho, crack_density)
+        fracture_density = layer_params.get('fracture_density') or layer_params.get('crack_density', 0.05)
+        return stiffness_hti_hudson(vp, vs, rho, fracture_density)
 
     elif media_type == 'OA':
         epsilon = layer_params.get('epsilon', 0.0)
         delta = layer_params.get('delta', 0.0)
         gamma = layer_params.get('gamma', 0.0)
-        crack_density = layer_params.get('crack_density', 0.05)
-        return stiffness_orthorhombic(vp, vs, rho, epsilon, delta, gamma, crack_density)
+        fracture_density = layer_params.get('fracture_density') or layer_params.get('crack_density', 0.05)
+        return stiffness_orthorhombic(vp, vs, rho, epsilon, delta, gamma, fracture_density)
 
     else:
         raise ValueError(f"Unknown media type: {media_type}")
@@ -428,7 +428,7 @@ def preset_fractured_reservoir() -> list:
             'vp': 3.5,
             'vs': 2.0,
             'rho': 2.3,
-            'crack_density': 0.08
+            'fracture_density': 0.08
         },
         {
             'type': 'VTI',
