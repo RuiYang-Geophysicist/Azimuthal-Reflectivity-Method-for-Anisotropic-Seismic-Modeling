@@ -1,0 +1,53 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+*.dylib
+
+# Build directories
+build/
+dist/
+*.egg-info/
+cpp/build/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+nohup.out
+
+# Temporary files
+*.tmp
+*.temp
+
+# Test outputs
+*.png
+!docs/assets/*.png
+test_*.py
+
+# Data files
+*.npz
+*.mat
+
+# Environment
+.env
+.venv/
+env/
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Claude
+.claude/

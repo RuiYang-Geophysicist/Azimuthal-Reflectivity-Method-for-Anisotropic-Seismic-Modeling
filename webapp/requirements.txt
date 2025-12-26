@@ -1,0 +1,18 @@
+# AzRM Streamlit Web Application Dependencies
+# Install with: pip install -r requirements.txt
+
+# Web framework
+streamlit>=1.28.0
+
+# Scientific computing
+numpy>=1.21.0
+scipy>=1.7.0
+
+# Data handling
+pandas>=1.3.0
+
+# Visualization
+matplotlib>=3.5.0
+
+# For building C++ module (optional, only needed for compilation)
+pybind11>=2.10.0
