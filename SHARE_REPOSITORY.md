@@ -89,3 +89,4 @@ gh repo add-collaborator RuiYang-Geophysicist/Azimuthal-Reflectivity-Method-for-
 2. 找到要移除的用户
 3. 点击用户名旁边的 **X** 或选择 **Remove**（移除）
 
+

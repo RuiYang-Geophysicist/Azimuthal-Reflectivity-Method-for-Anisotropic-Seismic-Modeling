@@ -1031,7 +1031,7 @@ with tab3:
 
     ### Author
 
-    Rui Yang, Tongji University, 2025
+    Rui Yang, Tongji University/Stanford University, 2025
 
     ### Technical Info
     """)
