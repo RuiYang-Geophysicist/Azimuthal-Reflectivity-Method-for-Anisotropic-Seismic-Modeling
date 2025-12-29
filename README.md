@@ -171,7 +171,7 @@ python3 -c "import sys; sys.path.insert(0,'webapp'); import azrm; print(f'✓ Az
 
 ```bash
 cd webapp
-streamlit run app.py
+python3 -m streamlit run app.py
 ```
 
 Then open http://localhost:8501 in your browser.
